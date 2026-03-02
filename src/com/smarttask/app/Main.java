@@ -2,7 +2,23 @@ package com.smarttask.app;
 
 import java.util.Scanner;
 
+/**
+ * Clase principal de la aplicación SmartTask.
+ * Contiene el método main que inicia el programa y muestra un menú interactivo
+ * al usuario para gestionar tareas (agregar, listar, marcar como completadas, eliminar).
+ * 
+ * @author EstebanCML
+ * @version 1.0
+ */
+
 public class Main {
+	/**
+     * Punto de entrada de la aplicación.
+     * Inicializa el gestor de tareas y el scanner, y ejecuta un bucle con el menú
+     * hasta que el usuario elige salir.
+     * 
+     * @param args Argumentos de línea de comandos (no se utilizan en esta versión).
+     */
 
 	public static void main(String[] args) {
 
@@ -37,28 +53,48 @@ public class Main {
         int opcion;
 
         do {
-            System.out.println("\n=== SMART TASK ===");
-            System.out.println("1. Agregar tarea");
-            System.out.println("2. Listar tareas");
-            System.out.println("3. Marcar tarea como completada");
-            System.out.println("4. Eliminar tarea");
-            System.out.println("5. Salir");
-            System.out.print("Elige una opción: ");
+        	System.out.println("\n");
+        	System.out.println("╔════════════════════════════════════════════╗");
+    		System.out.println("║            === SMART TASK ===              ║");
+            System.out.println("╠════════════════════╦═══════════════════════╣");
+    		System.out.println("║  1.   Agregar      ║  2.     Listar        ║");
+            System.out.println("║        Tarea       ║         Tareas        ║");
+            System.out.println("╠════════════════════╬═══════════════════════╣");
+            System.out.println("║  3. Marcar tarea   ║  4.    Eliminar       ║");
+            System.out.println("║   como completada  ║         Tarea         ║");
+            System.out.println("╠════════════════════╬═══════════════════════╣");
+            System.out.println("║  5 .   Salir       ║                       ║");
+            System.out.println("║                    ║                       ║");
+            System.out.println("╚════════════════════╩═══════════════════════╝");
+            
+           
             
             opcion = scanner.nextInt();
             scanner.nextLine(); // Limpiar buffer
 
             switch (opcion) {
-                case 1:
-                    System.out.print("Nombre de la tarea: ");
+            
+            case 1:
+                boolean seguirAgregando = true;
+                while (seguirAgregando) {
+                    // Pedir nombre
+                	System.out.println("╔══════════════════════════════╗");
+            		System.out.println("║      Nombre de la tarea:     ║");
+            		System.out.println("╚══════════════════════════════╝");
                     String nombre = scanner.nextLine();
                     
                     // Menú para prioridad
-                    System.out.println("Prioridad:");
-                    System.out.println("1. ALTA");
-                    System.out.println("2. MEDIA");
-                    System.out.println("3. BAJA");
-                    System.out.print("Elige: ");
+                    
+                	System.out.println("╔══════════════════════════════╗");
+            		System.out.println("║      === Prioridad ===       ║");
+                    System.out.println("╠══════════════╦═══════════════╣");
+            		System.out.println("║  1.  ALTA    ║  2.  MEDIA    ║");
+                    System.out.println("╠══════════════╬═══════════════╣");
+                    System.out.println("║  3.  BAJA    ║               ║");
+                    System.out.println("╠══════════════╩═══════════════╣");
+                    System.out.println("║            Elige:            ║");
+                    System.out.println("╚══════════════════════════════╝");
+                    
                     int p = scanner.nextInt();
                     scanner.nextLine();
                     
@@ -73,24 +109,70 @@ public class Main {
                     }
                     
                     gestor.agregarTarea(nombre, prioridad);
-                    break;
+                 // Preguntar si desea agregar otra
+                    System.out.println("\n");
+                    System.out.print("¿Quieres agregar otra tarea? (s/n): ");
+                    String respuesta = scanner.nextLine();
+                    if (!respuesta.equalsIgnoreCase("s")) {
+                        seguirAgregando = false; // Salir del bucle
+                    }
+                }
+                	break; // Volver al menú principal
                     
                 case 2:
                     gestor.listarTareas();
                     break;
                     
-                case 3:
-                    System.out.print("ID de la tarea a completar: ");
-                    int idCompletar = scanner.nextInt();
-                    scanner.nextLine();
-                    gestor.marcarComoCompletada(idCompletar);
+                case 3: // Marcar tarea como completada
+                    boolean seguirMarcando = true;
+                    while (seguirMarcando) {
+                        System.out.println("╔══════════════════════════════╗");
+                    	System.out.println("║ ID de la tarea a completar:  ║");
+                    	System.out.println("╚══════════════════════════════╝");
+                        int idCompletar = scanner.nextInt();
+                        scanner.nextLine(); // limpiar buffer
+
+                        boolean encontrada = gestor.marcarComoCompletada(idCompletar);
+
+                        if (!encontrada) {
+                            // Preguntar si quiere intentar con otro ID
+                            System.out.print("ID no encontrado. ¿Quieres intentar con otro ID? (s/n): ");
+                            String respuesta = scanner.nextLine();
+                            if (!respuesta.equalsIgnoreCase("s")) {
+                                seguirMarcando = false; // sale del bucle y vuelve al menú
+                            }
+                            // Si responde "s", el bucle se repite
+                        } else {
+                            // Si se encontró, salimos del bucle (ya se marcó)
+                            seguirMarcando = false;
+                        }
+                    }
                     break;
                     
-                case 4:
-                    System.out.print("ID de la tarea a eliminar: ");
-                    int idEliminar = scanner.nextInt();
-                    scanner.nextLine();
-                    gestor.eliminarTarea(idEliminar);
+                case 4: // Eliminar tarea
+                    boolean seguirEliminando = true;
+                    while (seguirEliminando) {
+                    	System.out.println("╔══════════════════════════════╗");
+                    	System.out.println("║  ID de la tarea a eliminar:  ║");
+                    	System.out.println("╚══════════════════════════════╝");
+                        int idEliminar = scanner.nextInt();
+                        scanner.nextLine(); // limpiar buffer
+
+                        boolean encontrada = gestor.eliminarTarea(idEliminar);
+
+                        if (!encontrada) {
+                            // Preguntar si quiere intentar con otro ID
+                            System.out.print("ID no encontrado. ¿Quieres intentar con otro ID? (s/n): ");
+                            String respuesta = scanner.nextLine();
+                            if (!respuesta.equalsIgnoreCase("s")) {
+                                seguirEliminando = false; // sale del bucle y vuelve al menú
+                            }
+                            // Si responde "s", el bucle se repite
+                        } else {
+                            // Si se encontró y eliminó, salimos del bucle
+                            seguirEliminando = false;
+                        }
+                    }
                     break;
                     
                 case 5:

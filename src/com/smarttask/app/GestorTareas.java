@@ -3,26 +3,46 @@ package com.smarttask.app;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona una lista de tareas y proporciona operaciones para agregar,
+ * listar, marcar como completadas y eliminar tareas.
+ * 
+ * @author EstebanCML
+ * @version 1.0
+ */
 
 public class GestorTareas {
 	
 	 private List<Tarea> tareas;
 	    private int nextId; // Para asignar IDs automáticos
 	    
+	    /** Constructor que inicializa la lista de tareas y el contador de IDs. */
+	// contructor
     public GestorTareas() {
         tareas = new ArrayList<>();
         nextId = 1;
     }
 	    
-	    
-	    
-
+    
+    /**
+     * Agrega una nueva tarea a la lista.
+     * 
+     * @param nombre    El nombre de la tarea.
+     * @param prioridad La prioridad de la tarea (ALTA, MEDIA, BAJA).
+     */
+    
+    // nuevo metodo
     public void agregarTarea(String nombre, Prioridad prioridad) {  // <-- CAMBIO
         Tarea nueva = new Tarea(nextId++, nombre, prioridad);
         tareas.add(nueva);
         System.out.println("Tarea agregada: " + nueva);
     }
     
+    /**
+     * Muestra por consola todas las tareas registradas.
+     * Si no hay tareas, muestra un mensaje indicándolo.
+     */
+    // metodo listar tareas, que primero consulta si tengo tareas en lista y lueo lista las tareas registrada si exiten    
     public void listarTareas() {
         if (tareas.isEmpty()) {
             System.out.println("No hay tareas.");
@@ -34,18 +54,35 @@ public class GestorTareas {
         }
     }
     
-    public void marcarComoCompletada(int id) {
+    /**
+     * Marca una tarea como completada, buscándola por su ID.
+     * 
+     * @param id El identificador único de la tarea a completar.
+     * @return true si la tarea fue encontrada y marcada, false en caso contrario.
+     */
+    
+    // metodo para marcar completada la tarea, busca el ID y si encuentra la tarea, llama al metodo y cambia a true     
+    public boolean marcarComoCompletada(int id) {
         for (Tarea t : tareas) {
             if (t.getId() == id) {
                 t.marcarCompletada();
                 System.out.println("Tarea " + id + " marcada como completada.");
-                return;
+                return true; // indica que se encontró y se marcó
             }
         }
         System.out.println("No se encontró tarea con ID: " + id);
+        return false; // no se encontró
     }
     
-    public void eliminarTarea(int id) {
+    /**
+     * Elimina una tarea de la lista, buscándola por su ID.
+     * 
+     * @param id El identificador único de la tarea a eliminar.
+     * @return true si la tarea fue encontrada y eliminada, false en caso contrario.
+     */
+    
+    // metodo para eliminar tarea, funcina similar al metodo marcarcomo completoada, la diferecia es que este elimina al final    
+    public boolean eliminarTarea(int id) {
         Tarea aEliminar = null;
         for (Tarea t : tareas) {
             if (t.getId() == id) {
@@ -56,8 +93,10 @@ public class GestorTareas {
         if (aEliminar != null) {
             tareas.remove(aEliminar);
             System.out.println("Tarea " + id + " eliminada.");
+            return true; // eliminada con éxito
         } else {
             System.out.println("No se encontró tarea con ID: " + id);
+            return false; // no encontrada
         }
     }
 
