@@ -37,6 +37,23 @@ public class GestorTareas {
         tareas.add(nueva);
         System.out.println("Tarea agregada: " + nueva);
     }
+    /**
+     * Agrega una nueva tarea a la lista, permitiendo especificar si es urgente.
+     * 
+     * @param nombre    El nombre de la tarea.
+     * @param prioridad La prioridad (solo se usa si no es urgente).
+     * @param urgente   true para crear una tarea urgente, false para normal.
+     */
+    public void agregarTarea(String nombre, Prioridad prioridad, boolean urgente) {
+        Tarea nueva;
+        if (urgente) {
+            nueva = new TareaUrgente(nextId++, nombre);
+        } else {
+            nueva = new TareaNormal(nextId++, nombre, prioridad);
+        }
+        tareas.add(nueva);
+        System.out.println("Tarea agregada: " + nueva);
+    }
     
     /**
      * Muestra por consola todas las tareas registradas.
@@ -48,7 +65,9 @@ public class GestorTareas {
             System.out.println("No hay tareas.");
             return;
         }
-        System.out.println("=== LISTA DE TAREAS ===");
+        System.out.println("╔═══════════════════════════╗");
+        System.out.println("║  === LISTA DE TAREAS ===  ║");
+        System.out.println("╚═══════════════════════════╝");
         for (Tarea t : tareas) {
             System.out.println(t);
         }
@@ -100,4 +119,15 @@ public class GestorTareas {
         }
     }
 
+    
+    /**
+     * Ejecuta la acción de todas las tareas (polimórficamente).
+     * Cada tarea se comportará según su tipo real.
+     */
+    public void ejecutarTodas() {
+        System.out.println("\n=== Ejecutando acciones de todas las tareas ===");
+        for (Tarea t : tareas) {
+            t.ejecutar();
+        }
+    }
 }

@@ -7,11 +7,11 @@ package com.smarttask.app;
  * y un estado que indica si está completada o no.
  * 
  * @author EstebanCML
- * @version 1.0
+ * @version 2.0
  */
 
 
-public class Tarea {
+public class Tarea implements Accionable {
 	 
 	// Atributos (encapsulamiento)
 	/** Identificador único de la tarea. */
@@ -119,8 +119,17 @@ public class Tarea {
     // Para mostrar la tarea fácilmente
     @Override
     public String toString() {
-        return "ID: [" + id + "] |nombre de la tarea [" + nombre + "], Prioridad es [" + prioridad + "] " + 
+        return "ID: [" + id + "] | nombre de la tarea [" + nombre + "], Prioridad es [" + prioridad + "] " + 
                (completada ? "[Estado: COMPLETADA]" : "[Estado: PENDIENTE]");
     }
 
+    /**
+     * Acción por defecto de una tarea: marcarse como completada.
+     */
+    @Override
+    public void ejecutar() {
+        this.marcarCompletada();
+        System.out.println("Tarea \"" + nombre + "\" ejecutada (marcada como completada).");
+    }
+    
 }
