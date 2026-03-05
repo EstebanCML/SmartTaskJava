@@ -63,7 +63,7 @@ public class Main {
             System.out.println("║  3. Marcar tarea   ║  4.    Eliminar       ║");
             System.out.println("║   como completada  ║         Tarea         ║");
             System.out.println("╠════════════════════╬═══════════════════════╣");
-            System.out.println("║  5 .   Salir       ║                       ║");
+            System.out.println("║  5.    Salir       ║  6. Ejecutar todas    ║");
             System.out.println("║                    ║                       ║");
             System.out.println("╚════════════════════╩═══════════════════════╝");
             
@@ -78,49 +78,76 @@ public class Main {
                 boolean seguirAgregando = true;
                 while (seguirAgregando) {
                     // Pedir nombre
-                	System.out.println("╔══════════════════════════════╗");
-            		System.out.println("║      Nombre de la tarea:     ║");
-            		System.out.println("╚══════════════════════════════╝");
-                    String nombre = scanner.nextLine();
-                    
-                    // Menú para prioridad
-                    
-                	System.out.println("╔══════════════════════════════╗");
-            		System.out.println("║      === Prioridad ===       ║");
-                    System.out.println("╠══════════════╦═══════════════╣");
-            		System.out.println("║  1.  ALTA    ║  2.  MEDIA    ║");
-                    System.out.println("╠══════════════╬═══════════════╣");
-                    System.out.println("║  3.  BAJA    ║               ║");
-                    System.out.println("╠══════════════╩═══════════════╣");
-                    System.out.println("║            Elige:            ║");
+                    System.out.println("╔══════════════════════════════╗");
+                    System.out.println("║      Nombre de la tarea:     ║");
                     System.out.println("╚══════════════════════════════╝");
-                    
-                    int p = scanner.nextInt();
-                    scanner.nextLine();
-                    
+                    String nombre = scanner.nextLine();
+
+                    // Preguntar primero si es urgente
+                    System.out.println("╔═════════════════════════════════╗");
+                    System.out.println("║  ¿Es una tarea urgente? (s/n):  ║");
+                    System.out.println("╚═════════════════════════════════╝");
+                    String esUrgente = scanner.nextLine();
+                    boolean urgente = esUrgente.equalsIgnoreCase("s");
+
                     Prioridad prioridad;
-                    switch (p) {
-                        case 1: prioridad = Prioridad.ALTA; break;
-                        case 2: prioridad = Prioridad.MEDIA; break;
-                        case 3: prioridad = Prioridad.BAJA; break;
-                        default:
-                            System.out.println("Opción no válida, se usará MEDIA.");
-                            prioridad = Prioridad.MEDIA;
+
+                    if (urgente) {
+                        // Si es urgente, la prioridad es ALTA directamente
+                        prioridad = Prioridad.ALTA;
+                        System.out.println("╔══════════════════════════════════════════════╗");
+                        System.out.println("║  Tarea urgente: se asignará prioridad ALTA.  ║");
+                        System.out.println("╚══════════════════════════════════════════════╝");
+                    } else {
+                        // Si no es urgente, mostrar menú de prioridad
+                        System.out.println("╔══════════════════════════════╗");
+                        System.out.println("║      === Prioridad ===       ║");
+                        System.out.println("╠══════════════╦═══════════════╣");
+                        System.out.println("║  1.  ALTA    ║  2.  MEDIA    ║");
+                        System.out.println("╠══════════════╬═══════════════╣");
+                        System.out.println("║  3.  BAJA    ║               ║");
+                        System.out.println("╠══════════════╩═══════════════╣");
+                        System.out.println("║            Elige:            ║");
+                        System.out.println("╚══════════════════════════════╝");
+
+                        int p = scanner.nextInt();
+                        scanner.nextLine();
+
+                        switch (p) {
+                            case 1:
+                                prioridad = Prioridad.ALTA;
+                                break;
+                            case 2:
+                                prioridad = Prioridad.MEDIA;
+                                break;
+                            case 3:
+                                prioridad = Prioridad.BAJA;
+                                break;
+                            default:
+                                System.out.println("Opción no válida, se usará MEDIA.");
+                                prioridad = Prioridad.MEDIA;
+                        }
                     }
-                    
-                    gestor.agregarTarea(nombre, prioridad);
-                 // Preguntar si desea agregar otra
+
+                    // Llamar al método sobrecargado de GestorTareas
+                    gestor.agregarTarea(nombre, prioridad, urgente);
+
+                    // Preguntar si desea agregar otra
                     System.out.println("\n");
+                    System.out.println("╔═══════════════════════════════════════╗");
+                    System.out.println("║  ¿Quieres agregar otra tarea? (s/n):  ║");
+                    System.out.println("╚═══════════════════════════════════════╝");
                     System.out.print("¿Quieres agregar otra tarea? (s/n): ");
                     String respuesta = scanner.nextLine();
                     if (!respuesta.equalsIgnoreCase("s")) {
-                        seguirAgregando = false; // Salir del bucle
+                        seguirAgregando = false;
                     }
                 }
-                	break; // Volver al menú principal
+                break; // Volver al menú principal
                     
                 case 2:
                     gestor.listarTareas();
+                    pausa(scanner);
                     break;
                     
                 case 3: // Marcar tarea como completada
@@ -147,6 +174,7 @@ public class Main {
                             seguirMarcando = false;
                         }
                     }
+                    pausa(scanner);
                     break;
                     
                 case 4: // Eliminar tarea
@@ -173,10 +201,15 @@ public class Main {
                             seguirEliminando = false;
                         }
                     }
+                    pausa(scanner);
                     break;
                     
                 case 5:
                     System.out.println("¡Hasta luego!");
+                    break;
+                    
+                case 6:
+                    gestor.ejecutarTodas();
                     break;
                     
                 default:
@@ -187,6 +220,13 @@ public class Main {
         scanner.close();
     }
 	
-	
+	/**
+	 * Pausa la ejecución hasta que el usuario presione Enter.
+	 * @param scanner El scanner para leer la entrada.
+	 */
+	private static void pausa(Scanner scanner) {
+	    System.out.println("\nPresiona Enter para continuar...");
+	    scanner.nextLine();
+	}
 	
 }
