@@ -1,4 +1,4 @@
-package com.smarttask.app;
+package com.smarttask.app.objetos;
 
 /**
  * Representa los niveles de prioridad que puede tener una tarea.

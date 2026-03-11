@@ -1,4 +1,4 @@
-package com.smarttask.app;
+package com.smarttask.app.objetos;
 
 /**
  * Representa una tarea de tipo urgente.
@@ -27,6 +27,6 @@ public class TareaUrgente extends Tarea {
     @Override
     public void ejecutar() {
         super.ejecutar(); // Marca como completada
-        System.out.println("¡TAREA URGENTE COMPLETADA! Se debe notificar al responsable.");
+        System.out.println("¡TAREA URGENTE!.");
     }
 }

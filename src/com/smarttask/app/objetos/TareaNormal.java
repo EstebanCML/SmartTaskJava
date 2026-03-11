@@ -1,4 +1,4 @@
-package com.smarttask.app;
+package com.smarttask.app.objetos;
 
 /**
  * Representa una tarea de tipo normal.

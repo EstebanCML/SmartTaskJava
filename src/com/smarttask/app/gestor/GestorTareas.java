@@ -1,7 +1,13 @@
-package com.smarttask.app;
+package com.smarttask.app.gestor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.smarttask.app.objetos.Tarea;
+import com.smarttask.app.objetos.TareaNormal;
+import com.smarttask.app.objetos.TareaUrgente;
+import com.smarttask.app.objetos.Prioridad;
+import  com.smarttask.app.interfaces.ServicioTareas;
 
 /**
  * Gestiona una lista de tareas y proporciona operaciones para agregar,
@@ -11,7 +17,7 @@ import java.util.List;
  * @version 1.0
  */
 
-public class GestorTareas {
+public class GestorTareas implements ServicioTareas {
 	
 	 private List<Tarea> tareas;
 	    private int nextId; // Para asignar IDs automáticos
@@ -24,19 +30,7 @@ public class GestorTareas {
     }
 	    
     
-    /**
-     * Agrega una nueva tarea a la lista.
-     * 
-     * @param nombre    El nombre de la tarea.
-     * @param prioridad La prioridad de la tarea (ALTA, MEDIA, BAJA).
-     */
-    
-    // nuevo metodo
-    public void agregarTarea(String nombre, Prioridad prioridad) {  // <-- CAMBIO
-        Tarea nueva = new Tarea(nextId++, nombre, prioridad);
-        tareas.add(nueva);
-        System.out.println("Tarea agregada: " + nueva);
-    }
+   
     /**
      * Agrega una nueva tarea a la lista, permitiendo especificar si es urgente.
      * 
@@ -129,5 +123,14 @@ public class GestorTareas {
         for (Tarea t : tareas) {
             t.ejecutar();
         }
+    }
+    
+    /**
+     * Obtiene la lista interna de tareas.
+     * Método creado exclusivamente para pruebas unitarias.
+     * @return lista de tareas.
+     */
+    public List<Tarea> getTareas() {
+        return tareas;
     }
 }
