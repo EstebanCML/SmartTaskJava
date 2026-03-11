@@ -1,6 +1,6 @@
-package com.smarttask.app;
+package com.smarttask.app.objetos;
 
-
+import  com.smarttask.app.interfaces.TareaEjecutable;
 /**
  * Representa una tarea dentro del sistema SmartTask.
  * Cada tarea tiene un identificador único, un nombre, una prioridad
@@ -11,7 +11,7 @@ package com.smarttask.app;
  */
 
 
-public class Tarea implements Accionable {
+public class Tarea implements TareaEjecutable {
 	 
 	// Atributos (encapsulamiento)
 	/** Identificador único de la tarea. */
